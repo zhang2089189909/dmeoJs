@@ -1,0 +1,166 @@
+<!--<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../toole/angular-1.4.6.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			
+			h2 span {
+				color: #999;
+			}
+		</style>
+	</head>
+	<body ng-app="app">
+		<div class="box" ng-controller="kzt">
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = angular.module('app', []);
+		app.controller('kzt', ['$scope', '$http', function($scope, $http) {
+			$http.get('https://m.douban.com/rexxar/api/v2/subject_collection/movie_showing/items?').then(function(str) {
+				console.log(str)
+			})
+		}])
+	</script>
+
+
+	</script>-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+
+</head>
+<body ng-app="myApp">
+<div ng-controller="myCont">
+
+<input type="text" ng-model="inp1" placeholder="请输入查询的书名">
+<button ng-click="search()">搜索</button>
+
+<ul ng-repeat="x in list">
+	<li ng-click="goTo($index)">{{x.title}}</li>
+	<img ng-src="{{x.images.medium}}">
+</ul>
+
+<button ng-click="getmore()">加载更多</button>
+
+</div>
+
+
+<script src="../toole/angular-1.4.6.min.js"></script>
+<script src="../toole/angular-route.min.js"></script>
+
+</body>
+<script>
+
+    var app = angular.module("myApp",[]);
+   
+   var data = "";
+    app.controller("myCont",["$scope","$http",function($scope,$http){
+
+       $scope.search = function(){
+
+       var str = $scope.inp1;
+       $http({
+       	url:"https://api.douban.com/v2/book/search?q="+str+"&start=0",
+       	method:"GET"
+       	// data:"",
+       	// dataType:
+       }).then(function(res){
+
+                console.log("数据信息是==="+res)
+
+          //成功
+          data =  res.data;
+          
+          
+           
+ 
+          $scope.list = data.books;
+          
+         
+
+
+       },function(){
+
+
+       })
+          
+       }
+
+
+       var num = 0 ;
+
+       $scope.getmore = function(){
+
+       var str = $scope.inp1;
+       num+=20;
+       $http({
+       	url:"https://api.douban.com/v2/book/search?q="+str+"&start="+num,
+       	method:"GET"
+       	// data:"",
+       	// dataType:
+       }).then(function(res){
+
+          //成功
+         var data =  res.data;
+          
+
+         var arr2 = $scope.list.concat(data.books);
+         
+         $scope.list = arr2;
+
+
+
+          console.log(data);
+
+
+       },function(){
+
+
+       })
+          
+}
+
+   //本地存储
+       $scope.goTo = function(ind){
+         
+         
+         var obj =  data.books[ind];
+         
+         console.log(data.books)
+         //详情页信息
+         var sum = obj.rating;
+         
+               
+         console.log("obj====-----" + obj.rating);
+
+ 
+         //将对象转化成字符串
+          sum = JSON.stringify(sum);
+          
+
+       console.log("sum====" + sum);
+         //存储到本地
+         localStorage.setItem("detail",sum);
+         
+      location.href = "xy_demo2.html"
+
+
+       }
+
+    
+
+    }])
+
+</script>
+
+
+
+</html>

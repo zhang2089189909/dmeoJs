@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			//对象深度克隆代码实现
+			function(Obj){
+				   var buf
+				   if(Obj instanceof Array){
+				   	    buf=[];
+				   	    var i=Obj.length;
+				   	    while(i--){
+				   	    	  buf[i]=colne(Obj[i])
+				   	    }
+				   	    return buf
+				   	    
+				   }else if(Obj instanceof Object){
+				   	   buf={};
+				   	   for(var k in Obj){
+				   	   	   buf[k]=clone(Obj[k])
+				   	   }
+				   	   return buf
+				   }else{
+				   	     return Obj
+				   }
+			}
+			//代码深度克隆
+		</script>
+	</body>
+</html>
